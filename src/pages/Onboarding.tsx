@@ -3,6 +3,9 @@ import { useAuth } from "../context/AuthContext";
 import { Card } from "../components/ui/Card";
 import { Select } from "../components/ui/Select";
 import { useState } from "react";
+import { Textarea } from "../components/ui/Textarea";
+import { Button } from "../components/ui/Button";
+import { ArrowRight } from "lucide-react";
 
 const goalOptions = [
   {value: "bulk", label: "Build Muscle (Bulk)"},
@@ -67,6 +70,9 @@ export default function Onboarding() {
     setFromData((prev) => ({ ...prev, [field]: value}));
   }
 
+  async function handleQuestionnaire(e: React.SubmitEvent){
+    e.preventDefault();
+  }
 
   if(!user){
     return <RedirectToSignIn />;
@@ -81,7 +87,7 @@ export default function Onboarding() {
           <Card variant="bordered">
             <h1 className="text-2xl font-bold mb-2">Tell Us About Yourself</h1>
             <p className="text-[var(--color-muted)] mb-6">Help us create the perfect plan for you.</p>
-            <form>
+            <form onSubmit={handleQuestionnaire} className="space-y-5">
               <Select 
                 id="goal"
                 label="What's your primary goal?" 
@@ -89,6 +95,57 @@ export default function Onboarding() {
                 value={formData.goal}
                 onChange={(e) => updateForm('goal', e.target.value)}
               />
+              <Select 
+                id="experience"
+                label="What is your training experience?" 
+                options={expereinceOptions}
+                value={formData.experience}
+                onChange={(e) => updateForm('experience', e.target.value)}
+              />
+              <div className="grid grid-cols-2 gap-4">
+                <Select 
+                  id="days per week"
+                  label="How many days per week can you workout?" 
+                  options={daysOptions}
+                  value={formData.daysPerWeek}
+                  onChange={(e) => updateForm('daysPerWeek', e.target.value)}
+                />
+                <Select 
+                  id="sessionLength"
+                  label="What is your prefered workout session length?" 
+                  options={sessionOptions}
+                  value={formData.sessionLength}
+                  onChange={(e) => updateForm('sessionLength', e.target.value)}
+                />
+              </div>
+              <Select 
+                id="equipment"
+                label="What equipment do you have access to?" 
+                options={equipmentOptions}
+                value={formData.equipment}
+                onChange={(e) => updateForm('equipment', e.target.value)}
+              />
+              <Select 
+                id="preferredSplit"
+                label="What is your prefered training split?" 
+                options={splitOptions}
+                value={formData.preferredSplit}
+                onChange={(e) => updateForm('preferredSplit', e.target.value)}
+              />
+
+              <Textarea 
+                id="injuries"
+                label="Any injuries or limitations? (optional)"
+                placeholder="Lower Back Issues, shoulder surgery, etc"
+                rows={3}
+                value={formData.injuries}
+                onChange={(e) => updateForm("injuries", e.target.value)}
+              />
+              <div className="flex gap-3 pt-2">
+                <Button type="submit" className="flex-1 gap-2">
+                  Generate My Plan <ArrowRight className="w-4 h-4" />
+                </Button>
+              </div>
             </form>
           </Card>
 
