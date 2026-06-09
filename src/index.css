@@ -1,35 +1,56 @@
 @import "tailwindcss";
+@import "@neondatabase/neon-js/ui/tailwind";
 
 @theme {
-  --font-sans: "Giest", system-ui, sans-serif;
+  --font-sans: "Geist", system-ui, sans-serif;
 
   --color-background: #0a0a0a;
   --color-foreground: #fafafa;
-  --color-muted: #a1a1a1;
+  --color-muted: #a1a1aa;
   --color-border: #27272a;
   --color-card: #18181b;
   --color-accent: #a3e635;
   --color-accent-hover: #84cc16;
 }
 
-@layer base{
+@layer base {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #fafafa;
+    --card: #18181b;
+    --card-foreground: #fafafa;
+    --popover: #18181b;
+    --popover-foreground: #fafafa;
+    --primary: #f4f4f5;
+    --primary-foreground: #18181b;
+    --secondary: #27272a;
+    --secondary-foreground: #fafafa;
+    --muted: #27272a;
+    --muted-foreground: #a1a1aa;
+    --accent: #27272a;
+    --accent-foreground: #fafafa;
+    --border: #3f3f46;
+    --input: #3f3f46;
+    --ring: #a1a1aa;
+  }
+
   html {
     font-family: var(--font-sans);
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
 
-  body{
+  body {
     margin: 0;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Override Better Auth Skeleton colors */
+  /* Override Better Auth skeleton colors */
   [data-slot="skeleton"],
-  animate-pulse {
-    background-color: var(--color-card) !important;
+  .animate-pulse {
+    background-color: var(--color-border) !important;
   }
 }
 
