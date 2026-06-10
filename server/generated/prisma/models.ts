@@ -8,5 +8,6 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/training_plan.js'
 export type * from './models/user_profiles.js'
 export type * from './commonInputTypes.js'

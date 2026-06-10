@@ -9,8 +9,9 @@ async function post(path: string, body: object) {
   });
 
   if (!res.ok){
+    const errorBody = await res.json().catch(() => ({}));
     throw new Error(
-      (await res.json().catch(() => ({}))).console.error || "Request Failed",
+      errorBody.error || "Request Failed",
     );
   }
 
@@ -25,6 +26,9 @@ async function get(){
 
 export const api = {
   saveProfile: (userId: string, profile: Omit<UserProfile, 'userId' | 'updatedAt'>) => {
-    return post("/profile", { userId, ...profile });
-  }
+     return post("/profile", { userId, ...profile });
+  },
+  generatePlan: (userId: string) => {
+     return post("/plan/generate", { userId });
+  },
 };

@@ -384,6 +384,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  training_plan: 'training_plan',
   user_profiles: 'user_profiles'
 } as const
 
@@ -400,10 +401,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user_profiles"
+    modelProps: "training_plan" | "user_profiles"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    training_plan: {
+      payload: Prisma.$training_planPayload<ExtArgs>
+      fields: Prisma.training_planFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.training_planFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.training_planFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload>
+        }
+        findFirst: {
+          args: Prisma.training_planFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.training_planFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload>
+        }
+        findMany: {
+          args: Prisma.training_planFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload>[]
+        }
+        create: {
+          args: Prisma.training_planCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload>
+        }
+        createMany: {
+          args: Prisma.training_planCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.training_planCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload>[]
+        }
+        delete: {
+          args: Prisma.training_planDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload>
+        }
+        update: {
+          args: Prisma.training_planUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload>
+        }
+        deleteMany: {
+          args: Prisma.training_planDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.training_planUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.training_planUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload>[]
+        }
+        upsert: {
+          args: Prisma.training_planUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$training_planPayload>
+        }
+        aggregate: {
+          args: Prisma.Training_planAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTraining_plan>
+        }
+        groupBy: {
+          args: Prisma.training_planGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Training_planGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.training_planCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Training_planCountAggregateOutputType> | number
+        }
+      }
+    }
     user_profiles: {
       payload: Prisma.$user_profilesPayload<ExtArgs>
       fields: Prisma.user_profilesFieldRefs
@@ -517,6 +592,18 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const Training_planScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  plan_json: 'plan_json',
+  plan_text: 'plan_text',
+  version: 'version',
+  created_at: 'created_at'
+} as const
+
+export type Training_planScalarFieldEnum = (typeof Training_planScalarFieldEnum)[keyof typeof Training_planScalarFieldEnum]
+
+
 export const User_profilesScalarFieldEnum = {
   user_id: 'user_id',
   goal: 'goal',
@@ -540,12 +627,28 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 export const NullsOrder = {
@@ -573,6 +676,20 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'String[]'
  */
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -727,6 +844,7 @@ export type PrismaClientOptions = ({
   queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
+  training_plan?: Prisma.training_planOmit
   user_profiles?: Prisma.user_profilesOmit
 }
 
