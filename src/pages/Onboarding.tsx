@@ -5,7 +5,9 @@ import { Select } from "../components/ui/Select";
 import { useState } from "react";
 import { Textarea } from "../components/ui/Textarea";
 import { Button } from "../components/ui/Button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
+import type { UserProfile } from "../types";
+
 
 const goalOptions = [
   {value: "bulk", label: "Build Muscle (Bulk)"},
@@ -55,7 +57,7 @@ const splitOptions = [
 
 export default function Onboarding() {
 
-  const {user} = useAuth()
+  const {user, saveProfile} = useAuth()
   const [formData, setFromData] = useState({
     goal: "bulk",
     experience: "intermediate",
@@ -66,12 +68,34 @@ export default function Onboarding() {
     preferredSplit: "upper_lower",
   });
 
+const [isGenerating, setIsGenerating] = useState(true);
+const [error, setError] = useState("");
+
+
   function updateForm(field: string, value: string){
     setFromData((prev) => ({ ...prev, [field]: value}));
   }
 
   async function handleQuestionnaire(e: React.SubmitEvent){
     e.preventDefault();
+
+    const profile: Omit<UserProfile, "userId" | "updatedAt"> = {
+      goal: formData.goal as UserProfile["goal"],
+      experience: formData.experience as UserProfile["experience"],
+      daysPerWeek: parseInt(formData.daysPerWeek),
+      sessionLength: parseInt(formData.sessionLength),
+      equipment: formData.equipment as UserProfile["equipment"],
+      injuries: formData.injuries || undefined,
+      preferredSplit: formData.preferredSplit as UserProfile["preferredSplit"],
+    };
+        try{
+        await saveProfile(profile);
+        setIsGenerating(true);
+        }catch (err) {
+            setError(err instanceof Error ? err.message : 'Failed to save profile');
+        }finally{
+            setIsGenerating(false);
+        }
   }
 
   if(!user){
@@ -84,7 +108,7 @@ export default function Onboarding() {
           {/* Progress Indicator */}
 
           {/* Step 1: Questionaire */}
-          <Card variant="bordered">
+          {!isGenerating ? <Card variant="bordered">
             <h1 className="text-2xl font-bold mb-2">Tell Us About Yourself</h1>
             <p className="text-[var(--color-muted)] mb-6">Help us create the perfect plan for you.</p>
             <form onSubmit={handleQuestionnaire} className="space-y-5">
@@ -147,9 +171,15 @@ export default function Onboarding() {
                 </Button>
               </div>
             </form>
+          </Card>: (
+          // {/* Step 2: GenAi */}
+          <Card variant="bordered" className="text-center py-16">
+            <Loader2 className="w-12 h-12 text-[var(--color-accent)] mx-auto mb-6 animate-spin"/>
+            <h1 className="text-2xl font-bold mb-2">Creating your Plan</h1>
+            <p className="text-[var(--color-muted)]">Our Ai is building your personalized training program</p>
           </Card>
+          )}
 
-          {/* Step 2: GenAi */}
         </div>
       </div>
     </SignedIn>
