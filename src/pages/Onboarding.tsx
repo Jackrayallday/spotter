@@ -7,6 +7,7 @@ import { Textarea } from "../components/ui/Textarea";
 import { Button } from "../components/ui/Button";
 import { ArrowRight, Loader2 } from "lucide-react";
 import type { UserProfile } from "../types";
+import { useNavigate } from "react-router-dom";
 
 
 const goalOptions = [
@@ -57,7 +58,7 @@ const splitOptions = [
 
 export default function Onboarding() {
 
-  const {user, saveProfile} = useAuth()
+  const {user, saveProfile, generatePlan} = useAuth()
   const [formData, setFromData] = useState({
     goal: "bulk",
     experience: "intermediate",
@@ -68,9 +69,9 @@ export default function Onboarding() {
     preferredSplit: "upper_lower",
   });
 
-const [isGenerating, setIsGenerating] = useState(true);
+const [isGenerating, setIsGenerating] = useState(false);
 const [error, setError] = useState("");
-
+const navigate = useNavigate()
 
   function updateForm(field: string, value: string){
     setFromData((prev) => ({ ...prev, [field]: value}));
@@ -91,6 +92,8 @@ const [error, setError] = useState("");
         try{
         await saveProfile(profile);
         setIsGenerating(true);
+        await generatePlan();
+        navigate("/profile")
         }catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to save profile');
         }finally{
@@ -111,6 +114,9 @@ const [error, setError] = useState("");
           {!isGenerating ? <Card variant="bordered">
             <h1 className="text-2xl font-bold mb-2">Tell Us About Yourself</h1>
             <p className="text-[var(--color-muted)] mb-6">Help us create the perfect plan for you.</p>
+            {error && (
+              <p className="mb-4 text-sm text-red-500">{error}</p>
+            )}
             <form onSubmit={handleQuestionnaire} className="space-y-5">
               <Select 
                 id="goal"
@@ -176,7 +182,7 @@ const [error, setError] = useState("");
           <Card variant="bordered" className="text-center py-16">
             <Loader2 className="w-12 h-12 text-[var(--color-accent)] mx-auto mb-6 animate-spin"/>
             <h1 className="text-2xl font-bold mb-2">Creating your Plan</h1>
-            <p className="text-[var(--color-muted)]">Our Ai is building your personalized training program</p>
+            <p className="text-[var(--color-muted)]">Our Ai is building your personalized training program...</p>
           </Card>
           )}
 
