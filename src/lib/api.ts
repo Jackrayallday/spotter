@@ -34,6 +34,9 @@ export const api = {
   generatePlan: (userId: string) => {
      return post("/plan/generate", { userId });
   },
+  getProfile: (userId: string) => {
+    return get(`/profile?userId=${userId}`) as Promise<Omit<UserProfile, "userId" | "updatedAt">>;
+  },
   getCurrentPlan : (userId: string) => {
     return get(`/plan/current?userId=${userId}`);
   }
