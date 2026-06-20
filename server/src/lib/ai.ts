@@ -1,5 +1,6 @@
 import OpenAi from "openai";
 import dotenv from "dotenv";
+import { jsonrepair } from "jsonrepair";
 import { TrainingPlan, UserProfile } from "../../types";
 
 dotenv.config();
@@ -45,12 +46,12 @@ const PLAN_RESPONSE_FORMAT = {
                 items: {
                   type: "object",
                   additionalProperties: false,
-                  required: ["name", "sets", "reps", "rest", "rpe", "notes", "alternatives"],
+                  required: ["name", "sets", "reps", "restSeconds", "rpe", "notes", "alternatives"],
                   properties: {
                     name: { type: "string" },
                     sets: { type: "number" },
                     reps: { type: "string" },
-                    rest: { type: "string" },
+                    restSeconds: { type: "number" },
                     rpe: { type: "number" },
                     notes: { type: "string" },
                     alternatives: {
@@ -161,7 +162,14 @@ export async function generateTrainingPlan(profile: UserProfile | Record<string,
           continue;
         }
 
-        const planData = JSON.parse(content);
+        let planData: unknown;
+
+        try {
+          planData = JSON.parse(content);
+        } catch {
+          console.warn(`[AI] Repairing malformed JSON from attempt ${attempt}.`);
+          planData = JSON.parse(jsonrepair(content));
+        }
 
         if (!isValidPlanResponse(planData)) {
           lastError = new Error("AI response did not contain a complete training plan");
@@ -171,7 +179,12 @@ export async function generateTrainingPlan(profile: UserProfile | Record<string,
         return formatPlanResponse(planData, normalizedProfile);
       } catch (error) {
         lastError = error instanceof Error ? error : new Error("Unable to parse AI response");
-        console.warn(`[AI] Attempt ${attempt} failed; trying the next fallback model.`, lastError.message);
+        console.warn(
+          index < PLAN_MODELS.length - 1
+            ? `[AI] Attempt ${attempt} failed; trying the next fallback model.`
+            : `[AI] Attempt ${attempt} failed.`,
+          lastError.message,
+        );
       }
     }
 
@@ -207,7 +220,17 @@ function isValidPlanResponse(value: unknown): value is Record<string, any> {
         typeof (day as Record<string, any>).day === "string" &&
         typeof (day as Record<string, any>).focus === "string" &&
         Array.isArray((day as Record<string, any>).exercises) &&
-        (day as Record<string, any>).exercises.length > 0,
+        (day as Record<string, any>).exercises.length > 0 &&
+        (day as Record<string, any>).exercises.every(
+          (exercise: unknown) =>
+            !!exercise &&
+            typeof exercise === "object" &&
+            typeof (exercise as Record<string, any>).name === "string" &&
+            typeof (exercise as Record<string, any>).sets === "number" &&
+            typeof (exercise as Record<string, any>).reps === "string" &&
+            typeof (exercise as Record<string, any>).restSeconds === "number" &&
+            typeof (exercise as Record<string, any>).rpe === "number",
+        ),
     )
   );
 }
@@ -232,7 +255,7 @@ function formatPlanResponse(
         name: ex.name || "Exercise",
         sets: ex.sets || 3,
         reps: ex.reps || "8-12",
-        rest: ex.rest || "60-90 sec",
+        restSeconds: ex.restSeconds,
         rpe: ex.rpe || 7,
         notes: ex.notes,
         alternatives: ex.alternatives,
@@ -293,7 +316,7 @@ function buildPrompt(profile: UserProfile): string {
               "name": "Exercise Name",
               "sets": 4,
               "reps": "6-8",
-              "rest": "2-3 min",
+              "restSeconds": 120,
               "rpe": 8,
               "notes": "form cues or tips (optional)",
               "alternatives": ["Alternative 1", "Alternative 2"]
@@ -309,6 +332,7 @@ function buildPrompt(profile: UserProfile): string {
       - Each workout should fit within ${profile.session_length} minutes
       - Include 4-6 exercises per workout
       - RPE (Rate of Perceived Exertion) should be 6-9
+      - Use restSeconds as a number of seconds (for example, 90), never a text value like "90 sec"
       - Include compound movements for beginners/intermediate, advanced can have more isolation
       - Match the preferred split type: ${profile.preferred_split}
       - ${profile.injuries ? `Avoid exercises that could aggravate: ${profile.injuries}` : ""}

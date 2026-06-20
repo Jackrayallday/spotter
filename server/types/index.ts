@@ -22,7 +22,7 @@ export interface Exercise {
   name: string;
   sets: number;
   reps: string;
-  rest: string;
+  restSeconds: number;
   rpe: number;
   notes?: string;
   alternatives?: string[];
