@@ -4,6 +4,71 @@ import { TrainingPlan, UserProfile } from "../../types";
 
 dotenv.config();
 
+const PLAN_MODELS = [
+  "openai/gpt-oss-20b:free",
+];
+
+const PLAN_RESPONSE_FORMAT = {
+  type: "json_schema",
+  json_schema: {
+    name: "training_plan",
+    strict: true,
+    schema: {
+      type: "object",
+      additionalProperties: false,
+      required: ["overview", "weeklySchedule", "progression"],
+      properties: {
+        overview: {
+          type: "object",
+          additionalProperties: false,
+          required: ["goal", "frequency", "split", "notes"],
+          properties: {
+            goal: { type: "string" },
+            frequency: { type: "string" },
+            split: { type: "string" },
+            notes: { type: "string" },
+          },
+        },
+        weeklySchedule: {
+          type: "array",
+          minItems: 1,
+          items: {
+            type: "object",
+            additionalProperties: false,
+            required: ["day", "focus", "exercises"],
+            properties: {
+              day: { type: "string" },
+              focus: { type: "string" },
+              exercises: {
+                type: "array",
+                minItems: 1,
+                items: {
+                  type: "object",
+                  additionalProperties: false,
+                  required: ["name", "sets", "reps", "rest", "rpe", "notes", "alternatives"],
+                  properties: {
+                    name: { type: "string" },
+                    sets: { type: "number" },
+                    reps: { type: "string" },
+                    rest: { type: "string" },
+                    rpe: { type: "number" },
+                    notes: { type: "string" },
+                    alternatives: {
+                      type: "array",
+                      items: { type: "string" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        progression: { type: "string" },
+      },
+    },
+  },
+} as const;
+
 export async function generateTrainingPlan(profile: UserProfile | Record<string, any>,
 ): Promise<Omit<TrainingPlan, "id" | "userId" | "version" | "createdAt">>{
 
@@ -37,41 +102,114 @@ export async function generateTrainingPlan(profile: UserProfile | Record<string,
   const prompt = buildPrompt(normalizedProfile);
 
   try{
-    const completion =  await openai.chat.completions.create({
-      model: "nvidia/nemotron-3-nano-30b-a3b:free",
-      messages: [
-        {
-          role: "system",
-          content: "You are a world class personal trainer and strength coach with deep expertise in exercise science, program design, and nutrition. You have helped thousands of clients achieve their fitness goals through personalized training plans. Your task is to create a customized training program based on the user's profile and goals.", 
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: 0.7,
-      response_format: {type: "json_object"},
-    });
+    let lastError: Error | null = null;
 
+    for (const [index, model] of PLAN_MODELS.entries()) {
+      const attempt = index + 1;
 
-    const content = completion.choices[0].message.content;
-
-    if (!content) {
-      console.error(
-        "[AI] No content in response:",
-        JSON.stringify(completion, null, 2),
+      console.log(
+        `[AI] Request diagnostics (attempt ${attempt}):`,
+        JSON.stringify(
+          {
+            model,
+            temperature: 0.7,
+            responseFormat: "json_schema",
+            profile: normalizedProfile,
+          },
+          null,
+          2,
+        ),
       );
-      throw new Error("No contnent in AI response");
+
+      try {
+        const completion = await openai.chat.completions.create({
+          model,
+          messages: [
+            {
+              role: "system",
+              content: "You are an expert fitness trainer and program designer. You must respond with valid JSON only. Do not include any markdown, reasoning, or additional text.",
+            },
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
+          temperature: 0.7,
+          response_format: PLAN_RESPONSE_FORMAT as any,
+        });
+
+        const content = completion.choices[0].message.content;
+        console.log(`[AI] Raw model response (attempt ${attempt}):`, content);
+        console.log(
+          `[AI] Response diagnostics (attempt ${attempt}):`,
+          JSON.stringify(
+            {
+              id: completion.id,
+              model: completion.model,
+              provider: (completion as unknown as { provider?: unknown }).provider,
+              finishReason: completion.choices[0]?.finish_reason,
+              refusal: completion.choices[0]?.message?.refusal,
+              usage: completion.usage,
+            },
+            null,
+            2,
+          ),
+        );
+
+        if (!content) {
+          lastError = new Error("No content in AI response");
+          continue;
+        }
+
+        const planData = JSON.parse(content);
+
+        if (!isValidPlanResponse(planData)) {
+          lastError = new Error("AI response did not contain a complete training plan");
+          continue;
+        }
+
+        return formatPlanResponse(planData, normalizedProfile);
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error("Unable to parse AI response");
+        console.warn(`[AI] Attempt ${attempt} failed; trying the next fallback model.`, lastError.message);
+      }
     }
 
-    const planData = JSON.parse(content);
-
-    return formatPlanResponse(planData, normalizedProfile);
+    throw lastError || new Error("Unable to generate a complete training plan");
 
   } catch (error) {
     console.error("Error generating training plan:", error);
     throw error;
   }
+}
+
+function isValidPlanResponse(value: unknown): value is Record<string, any> {
+  if (!value || typeof value !== "object") return false;
+
+  const plan = value as Record<string, any>;
+  const overview = plan.overview;
+
+  return (
+    typeof plan.progression === "string" &&
+    plan.progression.trim().length > 0 &&
+    !!overview &&
+    typeof overview === "object" &&
+    typeof overview.goal === "string" &&
+    typeof overview.frequency === "string" &&
+    typeof overview.split === "string" &&
+    typeof overview.notes === "string" &&
+    Array.isArray(plan.weeklySchedule) &&
+    plan.weeklySchedule.length > 0 &&
+    plan.weeklySchedule.every(
+      (day: unknown) =>
+        !!day &&
+        typeof day === "object" &&
+        typeof (day as Record<string, any>).day === "string" &&
+        typeof (day as Record<string, any>).focus === "string" &&
+        Array.isArray((day as Record<string, any>).exercises) &&
+        (day as Record<string, any>).exercises.length > 0,
+    )
+  );
 }
 
 
