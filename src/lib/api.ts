@@ -18,10 +18,13 @@ async function post(path: string, body: object) {
   return res.json();
 }
 
-async function get(){
-
-
-
+async function get(path : string){
+  const res = await fetch(`${BASE_URL}/api${path}`);
+    if (!res.ok)
+    throw new Error(
+      (await res.json().catch(() => ({}))).error || "Request failed",
+    );
+  return res.json();
 }
 
 export const api = {
@@ -31,4 +34,7 @@ export const api = {
   generatePlan: (userId: string) => {
      return post("/plan/generate", { userId });
   },
+  getCurrentPlan : (userId: string) => {
+    return get(`/plan/current?userId=${userId}`);
+  }
 };
