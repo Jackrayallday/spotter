@@ -28,7 +28,9 @@ export interface Exercise {
   name: string;
   sets: number;
   reps: string;
-  rest: string;
+  restSeconds?: number;
+  // Preserves display support for plans generated before restSeconds was introduced.
+  rest?: string;
   rpe: number;
   notes?: string;
   alternatives?: string[];

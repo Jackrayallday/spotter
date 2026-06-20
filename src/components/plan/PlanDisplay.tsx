@@ -2,6 +2,16 @@ import { Dumbbell, Info } from "lucide-react";
 import type { DaySchedule, Exercise } from "../../types";
 import { Card } from "../ui/Card";
 
+function formatRest(exercise: Exercise) {
+  if (typeof exercise.restSeconds === "number") {
+    return exercise.restSeconds % 60 === 0
+      ? `${exercise.restSeconds / 60} min`
+      : `${exercise.restSeconds} sec`;
+  }
+
+  return exercise.rest || "—";
+}
+
 function ExerciseRow({
   exercise,
   index,
@@ -37,7 +47,7 @@ function ExerciseRow({
       </td>
 
       <td className="py-3 px-4 text-center">
-        <span className="text-[var(--color-muted)]">{exercise.rest}</span>
+        <span className="text-[var(--color-muted)]">{formatRest(exercise)}</span>
       </td>
       <td className="py-3 px-4 text-center">
         <span
