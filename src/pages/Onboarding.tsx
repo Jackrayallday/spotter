@@ -2,12 +2,13 @@ import { RedirectToSignIn, SignedIn } from "@neondatabase/neon-js/auth/react";
 import { useAuth } from "../context/AuthContext";
 import { Card } from "../components/ui/Card";
 import { Select } from "../components/ui/Select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Textarea } from "../components/ui/Textarea";
 import { Button } from "../components/ui/Button";
 import { ArrowRight, Loader2 } from "lucide-react";
 import type { UserProfile } from "../types";
 import { useNavigate } from "react-router-dom";
+import { api } from "../lib/api";
 
 
 const goalOptions = [
@@ -70,8 +71,38 @@ export default function Onboarding() {
   });
 
 const [isGenerating, setIsGenerating] = useState(false);
+const [isProfileLoading, setIsProfileLoading] = useState(true);
+const [hasExistingProfile, setHasExistingProfile] = useState(false);
 const [error, setError] = useState("");
 const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!user) return;
+
+    async function loadProfile() {
+      try {
+        const profile = await api.getProfile(user.id);
+        setFromData({
+          goal: profile.goal,
+          experience: profile.experience,
+          daysPerWeek: String(profile.daysPerWeek),
+          sessionLength: String(profile.sessionLength),
+          equipment: profile.equipment,
+          injuries: profile.injuries || "",
+          preferredSplit: profile.preferredSplit,
+        });
+        setHasExistingProfile(true);
+      } catch (error) {
+        if (!(error instanceof Error) || error.message !== "Profile not found") {
+          setError("Unable to load your saved profile. You can still complete the form below.");
+        }
+      } finally {
+        setIsProfileLoading(false);
+      }
+    }
+
+    loadProfile();
+  }, [user]);
 
   function updateForm(field: string, value: string){
     setFromData((prev) => ({ ...prev, [field]: value}));
@@ -111,9 +142,12 @@ const navigate = useNavigate()
           {/* Progress Indicator */}
 
           {/* Step 1: Questionaire */}
-          {!isGenerating ? <Card variant="bordered">
-            <h1 className="text-2xl font-bold mb-2">Tell Us About Yourself</h1>
-            <p className="text-[var(--color-muted)] mb-6">Help us create the perfect plan for you.</p>
+          {isProfileLoading ? <Card variant="bordered" className="py-16 text-center">
+            <Loader2 className="w-12 h-12 text-[var(--color-accent)] mx-auto mb-6 animate-spin"/>
+            <h1 className="text-2xl font-bold mb-2">Loading Your Profile</h1>
+          </Card> : !isGenerating ? <Card variant="bordered">
+            <h1 className="text-2xl font-bold mb-2">{hasExistingProfile ? "Update Your Profile" : "Tell Us About Yourself"}</h1>
+            <p className="text-[var(--color-muted)] mb-6">{hasExistingProfile ? "Adjust your details, then we’ll create an updated plan." : "Help us create the perfect plan for you."}</p>
             {error && (
               <p className="mb-4 text-sm text-red-500">{error}</p>
             )}
@@ -173,7 +207,7 @@ const navigate = useNavigate()
               />
               <div className="flex gap-3 pt-2">
                 <Button type="submit" className="flex-1 gap-2">
-                  Generate My Plan <ArrowRight className="w-4 h-4" />
+                  {hasExistingProfile ? "Update & Generate Plan" : "Generate My Plan"} <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
             </form>

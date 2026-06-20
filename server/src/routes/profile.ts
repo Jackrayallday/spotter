@@ -3,6 +3,37 @@ import { prisma } from "../lib/prisma";
 
 export const profileRouter = Router();
 
+profileRouter.get("/", async (req: Request, res: Response) => {
+  try {
+    const userId = req.query.userId as string;
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    const profile = await prisma.user_profiles.findUnique({
+      where: { user_id: userId },
+    });
+
+    if (!profile) {
+      return res.status(404).json({ error: "Profile not found" });
+    }
+
+    res.json({
+      goal: profile.goal,
+      experience: profile.experience,
+      daysPerWeek: profile.days_per_week,
+      sessionLength: profile.session_length,
+      equipment: profile.equipment,
+      injuries: profile.injuries,
+      preferredSplit: profile.preferred_split,
+    });
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ error: "Failed to fetch profile" });
+  }
+});
+
 profileRouter.post("/", async (req: Request, res: Response) => {
   try {
     const {userId, ...profileData} = req.body;
