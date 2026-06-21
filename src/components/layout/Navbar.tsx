@@ -21,7 +21,7 @@ export default function Navbar() {
               <Link to="/profile">
                 <Button variant="ghost" size="sm">My Plan</Button>
               </Link>
-              <UserButton className="bg-(--color-accent)"/>
+              <UserButton className="bg-(--color-accent)" size="icon" />
             </> )
           //if the user is authenticated, give them UI to reflect that
 

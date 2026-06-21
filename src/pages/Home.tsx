@@ -1,4 +1,4 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Zap,
   Target,
@@ -39,12 +39,14 @@ const features = [
 ];
 
 export default function Home() {
-  const { user, isLoading } = useAuth();
+  const { user } = useAuth();
+  const getStartedPath = user
+    ? "/onboarding"
+    : "/auth/sign-up?redirectTo=%2Fonboarding";
+  const signInPath = user
+    ? "/onboarding"
+    : "/auth/sign-in?redirectTo=%2Fonboarding";
 
-  // Redirect authenticated users to profile
-  if (!isLoading && user) {
-    return <Navigate to="/profile" replace />;
-  }
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -74,13 +76,13 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/onboarding">
+            <Link to={getStartedPath}>
               <Button size="lg" className="gap-2">
                 Get Started Free
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>
-            <Link to="/onboarding">
+            <Link to={signInPath}>
               <Button variant="secondary" size="lg">
                 Sign In
               </Button>
