@@ -1,4 +1,4 @@
-import { prisma } from "./lib/prisma.js";
+import { pool } from "./lib/db.js";
 
 function json(data: unknown, init?: ResponseInit) {
   return Response.json(data, init);
@@ -13,9 +13,15 @@ export async function GET(request: Request) {
       return json({ error: "User ID is required" }, { status: 400 });
     }
 
-    const profile = await prisma.user_profiles.findUnique({
-      where: { user_id: userId },
-    });
+    const result = await pool.query(
+      `SELECT goal, experience, days_per_week, session_length, equipment, injuries, preferred_split
+       FROM user_profiles
+       WHERE user_id = $1
+       LIMIT 1`,
+      [userId],
+    );
+
+    const profile = result.rows[0];
 
     if (!profile) {
       return json({ error: "Profile not found" }, { status: 404 });
@@ -58,30 +64,40 @@ export async function POST(request: Request) {
       return json({ error: "Missing required profile fields" }, { status: 400 });
     }
 
-    await prisma.user_profiles.upsert({
-      where: { user_id: userId },
-      update: {
+    await pool.query(
+      `INSERT INTO user_profiles (
+        user_id,
         goal,
         experience,
-        days_per_week: daysPerWeek,
-        session_length: sessionLength,
+        days_per_week,
+        session_length,
         equipment,
-        injuries: injuries || null,
-        preferred_split: preferredSplit,
-        update_at: new Date(),
-      },
-      create: {
-        user_id: userId,
+        injuries,
+        preferred_split,
+        update_at
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+      ON CONFLICT (user_id)
+      DO UPDATE SET
+        goal = EXCLUDED.goal,
+        experience = EXCLUDED.experience,
+        days_per_week = EXCLUDED.days_per_week,
+        session_length = EXCLUDED.session_length,
+        equipment = EXCLUDED.equipment,
+        injuries = EXCLUDED.injuries,
+        preferred_split = EXCLUDED.preferred_split,
+        update_at = NOW()`,
+      [
+        userId,
         goal,
         experience,
-        days_per_week: daysPerWeek,
-        session_length: sessionLength,
+        daysPerWeek,
+        sessionLength,
         equipment,
-        injuries: injuries || null,
-        preferred_split: preferredSplit,
-        update_at: new Date(),
-      },
-    });
+        injuries || null,
+        preferredSplit,
+      ],
+    );
 
     return json({ success: true });
   } catch (error) {

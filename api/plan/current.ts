@@ -1,4 +1,4 @@
-import { prisma } from "../lib/prisma.js";
+import { pool } from "../lib/db.js";
 
 function json(data: unknown, init?: ResponseInit) {
   return Response.json(data, init);
@@ -13,10 +13,16 @@ export async function GET(request: Request) {
       return json({ error: "User ID is required" }, { status: 400 });
     }
 
-    const plan = await prisma.training_plan.findFirst({
-      where: { user_id: userId },
-      orderBy: { created_at: "desc" },
-    });
+    const result = await pool.query(
+      `SELECT id, user_id, plan_json, plan_text, version, created_at
+       FROM training_plan
+       WHERE user_id = $1
+       ORDER BY created_at DESC
+       LIMIT 1`,
+      [userId],
+    );
+
+    const plan = result.rows[0];
 
     if (!plan) {
       return json({ error: "No plan found" }, { status: 404 });

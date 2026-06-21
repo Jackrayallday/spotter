@@ -1,5 +1,5 @@
 import { generateTrainingPlan } from "../lib/ai.js";
-import { prisma } from "../lib/prisma.js";
+import { pool } from "../lib/db.js";
 
 function json(data: unknown, init?: ResponseInit) {
   return Response.json(data, init);
@@ -13,9 +13,15 @@ export async function POST(request: Request) {
       return json({ error: "User ID is required" }, { status: 400 });
     }
 
-    const profile = await prisma.user_profiles.findUnique({
-      where: { user_id: userId },
-    });
+    const profileResult = await pool.query(
+      `SELECT goal, experience, days_per_week, session_length, equipment, injuries, preferred_split
+       FROM user_profiles
+       WHERE user_id = $1
+       LIMIT 1`,
+      [userId],
+    );
+
+    const profile = profileResult.rows[0];
 
     if (!profile) {
       return json(
@@ -24,13 +30,17 @@ export async function POST(request: Request) {
       );
     }
 
-    const latestPlan = await prisma.training_plan.findFirst({
-      where: { user_id: userId },
-      orderBy: { created_at: "desc" },
-      select: { version: true },
-    });
+    const latestPlanResult = await pool.query(
+      `SELECT version
+       FROM training_plan
+       WHERE user_id = $1
+       ORDER BY created_at DESC
+       LIMIT 1`,
+      [userId],
+    );
 
-    const nextVersion = latestPlan ? latestPlan.version + 1 : 1;
+    const latestPlan = latestPlanResult.rows[0];
+    const nextVersion = latestPlan ? Number(latestPlan.version) + 1 : 1;
     let planJson;
 
     try {
@@ -47,14 +57,14 @@ export async function POST(request: Request) {
     }
 
     const planText = JSON.stringify(planJson, null, 2);
-    const newPlan = await prisma.training_plan.create({
-      data: {
-        user_id: userId,
-        plan_json: planJson,
-        plan_text: planText,
-        version: nextVersion,
-      },
-    });
+    const newPlanResult = await pool.query(
+      `INSERT INTO training_plan (user_id, plan_json, plan_text, version)
+       VALUES ($1, $2::jsonb, $3, $4)
+       RETURNING id, version, created_at`,
+      [userId, JSON.stringify(planJson), planText, nextVersion],
+    );
+
+    const newPlan = newPlanResult.rows[0];
 
     return json({
       id: newPlan.id,
