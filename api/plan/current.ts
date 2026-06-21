@@ -1,4 +1,4 @@
-import { prisma } from "../../server/src/lib/prisma";
+import { prisma } from "../lib/prisma.js";
 
 function json(data: unknown, init?: ResponseInit) {
   return Response.json(data, init);
