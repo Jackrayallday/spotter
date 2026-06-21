@@ -1,5 +1,5 @@
-import { generateTrainingPlan } from "../../server/src/lib/ai";
-import { prisma } from "../../server/src/lib/prisma";
+import { generateTrainingPlan } from "../lib/ai.js";
+import { prisma } from "../lib/prisma.js";
 
 function json(data: unknown, init?: ResponseInit) {
   return Response.json(data, init);
