@@ -1,7 +1,7 @@
 import OpenAi from "openai";
 import dotenv from "dotenv";
 import { jsonrepair } from "jsonrepair";
-import { TrainingPlan, UserProfile } from "../../types";
+import type { TrainingPlan, UserProfile } from "../../types";
 
 dotenv.config();
 
