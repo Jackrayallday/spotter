@@ -1,5 +1,5 @@
 import { Navigate, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "../components/ui/Button";
 import {
@@ -8,17 +8,34 @@ import {
   RefreshCcw,
   Loader2,
   Pencil,
-  Target,
   TrendingUp,
+  Flame,
 } from "lucide-react";
 import { Card } from "../components/ui/Card";
 import { PlanDisplay } from "../components/plan/PlanDisplay.tsx";
+import { api } from "../lib/api";
 
 export default function Profile() {
   const { user, isLoading, plan, generatePlan } = useAuth();
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [generationError, setGenerationError] = useState("");
+  const [targetKcal, setTargetKcal] = useState<number | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) return;
+    let isCurrent = true;
+
+    api.getProfile(user.id)
+      .then((profile) => {
+        if (isCurrent) setTargetKcal(profile.targetKcal ?? null);
+      })
+      .catch(() => {
+        if (isCurrent) setTargetKcal(null);
+      });
+
+    return () => { isCurrent = false; };
+  }, [user]);
 
   if (!user && !isLoading) {
     return <Navigate to="/auth/sign-in" replace />;
@@ -36,6 +53,15 @@ export default function Profile() {
       hour: "2-digit",
       minute: "2-digit",
     });
+  }
+
+  function formatSplit(split: string) {
+    const labels: Record<string, string> = {
+      full_body: "Full Body",
+      upper_lower: "Upper/Lower",
+      ppl: "Push/Pull/Legs",
+    };
+    return labels[split] || split.replace(/[_-]/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
   }
 
   async function handleRegenerate() {
@@ -90,17 +116,19 @@ export default function Profile() {
           <p className="mb-6 text-sm text-red-500">{generationError}</p>
         )}
 
-        <div className="grid md:grid-cols-4 gap-4 mb-8">
-          <Card variant="bordered" className="flex items-center gap-3">
+        <div className="grid md:grid-cols-4 gap-3 mb-4">
+          <Card variant="bordered" className="flex items-center gap-3 p-4">
             <div className="w-10 h-10 flex items-center justify-center">
-              <Target className="w-5 h-5 text-[var(--color-accent)]" />
+              <Flame className="w-5 h-5 text-[var(--color-accent)]" />
             </div>
             <div>
-              <p className="text-xs text-[var(--color-muted)]">Goal</p>
-              <p className="font-medium text-sm">{plan.overview.goal}</p>
+              <p className="text-xs text-[var(--color-muted)]">Daily Calories</p>
+              <p className="font-medium text-sm">
+                {targetKcal ? `${targetKcal.toLocaleString()} kcal/day` : "Not set"}
+              </p>
             </div>
           </Card>
-          <Card variant="bordered" className="flex items-center gap-3">
+          <Card variant="bordered" className="flex items-center gap-3 p-4">
             <div className="w-10 h-10 flex items-center justify-center">
               <Calendar className="w-5 h-5 text-[var(--color-accent)]" />
             </div>
@@ -109,16 +137,16 @@ export default function Profile() {
               <p className="font-medium text-sm">{plan.overview.frequency}</p>
             </div>
           </Card>
-          <Card variant="bordered" className="flex items-center gap-3">
+          <Card variant="bordered" className="flex items-center gap-3 p-4">
             <div className="w-10 h-10 flex items-center justify-center">
               <Dumbbell className="w-5 h-5 text-[var(--color-accent)]" />
             </div>
             <div>
               <p className="text-xs text-[var(--color-muted)]">Split</p>
-              <p className="font-medium text-sm">{plan.overview.split}</p>
+              <p className="font-medium text-sm">{formatSplit(plan.overview.split)}</p>
             </div>
           </Card>
-          <Card variant="bordered" className="flex items-center gap-3">
+          <Card variant="bordered" className="flex items-center gap-3 p-4">
             <div className="w-10 h-10 flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-[var(--color-accent)]" />
             </div>
@@ -129,8 +157,12 @@ export default function Profile() {
           </Card>
         </div>
 
-        {/* Plan notes */}
-        <Card variant="bordered" className="mb-8">
+        <Card variant="bordered" className="mb-4 p-4">
+          <h2 className="font-semibold text-lg mb-2">Training Goal</h2>
+          <p className="text-[var(--color-muted)] text-sm leading-relaxed">
+            {plan.overview.goal}
+          </p>
+          <div className="my-3 border-t border-[var(--color-border)]" />
           <h2 className="font-semibold text-lg mb-2">Program Notes</h2>
           <p className="text-[var(--color-muted)] text-sm leading-relaxed">
             {plan.overview.notes}
@@ -138,10 +170,10 @@ export default function Profile() {
         </Card>
 
         {/* Weekly Schedule */}
-        <h2 className="font-semibold text-xl mb-4">Weekly Schedule</h2>
+        <h2 className="font-semibold text-xl mb-4 mt-8">Weekly Schedule</h2>
         <PlanDisplay weeklySchedule={plan.weeklySchedule} />
 
-        <Card variant="bordered" className="mb-8">
+        <Card variant="bordered" className="mt-8 mb-4 p-4">
           <h2 className="font-semibold text-lg mb-2">Progression Strategy</h2>
           <p className="text-[var(--color-muted)] text-sm leading-relaxed">
             {plan.progression}

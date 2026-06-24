@@ -1,4 +1,4 @@
-import { Dumbbell, Info } from "lucide-react";
+import { Dumbbell } from "lucide-react";
 import type { DaySchedule, Exercise } from "../../types";
 import { Card } from "../ui/Card";
 
@@ -29,10 +29,7 @@ function ExerciseRow({
           <div>
             <p className="font-medium">{exercise.name}</p>
             {exercise.notes && (
-              <p className="text-xs text-[var(--color-muted)] mt-0.5 flex items-center gap-1">
-                <Info className="w-3 h-3" />
-                {exercise.notes}
-              </p>
+              <p className="text-xs text-[var(--color-muted)] mt-0.5">{exercise.notes}</p>
             )}
           </div>
         </div>

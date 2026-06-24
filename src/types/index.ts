@@ -14,6 +14,18 @@ export interface UserProfile {
   equipment: "full_gym" | "home" | "dumbbells";
   injuries?: string | null;
   preferredSplit: "full_body" | "upper_lower" | "ppl" | "custom";
+  age: number;
+  calculationSex: "female" | "male";
+  heightFeet: number;
+  heightInches: number;
+  weightPounds: number;
+  activityLevel: "sedentary" | "light" | "moderate" | "very_active" | "extra_active";
+  nutritionGoal: "cut" | "maintenance" | "bulk";
+  desiredPace: "gentle" | "steady" | "faster" | null;
+  bmrKcal: number;
+  tdeeKcal: number;
+  dailyAdjustmentKcal: number;
+  targetKcal: number;
   updatedAt: string;
 }
 

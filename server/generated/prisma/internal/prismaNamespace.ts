@@ -613,6 +613,18 @@ export const User_profilesScalarFieldEnum = {
   equipment: 'equipment',
   injuries: 'injuries',
   preferred_split: 'preferred_split',
+  age: 'age',
+  calculation_sex: 'calculation_sex',
+  height_feet: 'height_feet',
+  height_inches: 'height_inches',
+  weight_pounds: 'weight_pounds',
+  activity_level: 'activity_level',
+  nutrition_goal: 'nutrition_goal',
+  desired_pace: 'desired_pace',
+  bmr_kcal: 'bmr_kcal',
+  tdee_kcal: 'tdee_kcal',
+  daily_adjustment_kcal: 'daily_adjustment_kcal',
+  target_kcal: 'target_kcal',
   update_at: 'update_at'
 } as const
 
@@ -722,10 +734,24 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
+
 
 
 /**
@@ -908,4 +934,3 @@ export type PrismaAction =
  * `PrismaClient` proxy available in interactive transactions.
  */
 export type TransactionClient = Omit<DefaultPrismaClient, runtime.ITXClientDenyList>
-

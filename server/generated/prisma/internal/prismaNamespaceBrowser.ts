@@ -92,6 +92,18 @@ export const User_profilesScalarFieldEnum = {
   equipment: 'equipment',
   injuries: 'injuries',
   preferred_split: 'preferred_split',
+  age: 'age',
+  calculation_sex: 'calculation_sex',
+  height_feet: 'height_feet',
+  height_inches: 'height_inches',
+  weight_pounds: 'weight_pounds',
+  activity_level: 'activity_level',
+  nutrition_goal: 'nutrition_goal',
+  desired_pace: 'desired_pace',
+  bmr_kcal: 'bmr_kcal',
+  tdee_kcal: 'tdee_kcal',
+  daily_adjustment_kcal: 'daily_adjustment_kcal',
+  target_kcal: 'target_kcal',
   update_at: 'update_at'
 } as const
 
