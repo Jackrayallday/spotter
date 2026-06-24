@@ -16,7 +16,7 @@ import { PlanDisplay } from "../components/plan/PlanDisplay.tsx";
 import { api } from "../lib/api";
 
 export default function Profile() {
-  const { user, isLoading, plan, generatePlan } = useAuth();
+  const { user, isLoading, isPlanLoading, plan, generatePlan } = useAuth();
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [generationError, setGenerationError] = useState("");
   const [targetKcal, setTargetKcal] = useState<number | null>(null);
@@ -37,7 +37,11 @@ export default function Profile() {
     return () => { isCurrent = false; };
   }, [user]);
 
-  if (!user && !isLoading) {
+  if (isLoading || isPlanLoading) {
+    return <div className="min-h-screen" aria-busy="true" />;
+  }
+
+  if (!user) {
     return <Navigate to="/auth/sign-in" replace />;
   }
 
