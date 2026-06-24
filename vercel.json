@@ -8,7 +8,7 @@
   ],
   "functions": {
     "api/plan/generate.ts": {
-      "maxDuration": 60
+      "maxDuration": 300
     }
   }
 }
