@@ -41,10 +41,10 @@ const features = [
 export default function Home() {
   const { user } = useAuth();
   const getStartedPath = user
-    ? "/onboarding"
+    ? "/profile"
     : "/auth/sign-up?redirectTo=%2Fonboarding";
   const signInPath = user
-    ? "/onboarding"
+    ? "/profile"
     : "/auth/sign-in?redirectTo=%2Fonboarding";
 
   return (

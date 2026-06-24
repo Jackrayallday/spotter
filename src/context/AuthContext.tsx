@@ -1,4 +1,4 @@
-import { createContext, useState, type ReactNode, useEffect, useContext, useCallback, useRef } from 'react'
+import { createContext, useState, type ReactNode, useEffect, useContext, useCallback, useMemo, useRef } from 'react'
 import type {TrainingPlan, User, UserProfile} from '../types'
 import { authClient } from '../lib/auth';
 import { api } from '../lib/api';
@@ -18,9 +18,17 @@ const AuthContext = createContext <AuthContextType | null>(null)
 
 export default function AuthProvider({ children } : { children: ReactNode})
 {
-    const [neonUser, setNeonUser] = useState<any>(null);
+    const { data: session, isPending: isLoading } = authClient.useSession();
+    const neonUser = useMemo<User | null>(() => {
+        if (!session?.user) return null;
+
+        return {
+            id: session.user.id,
+            email: session.user.email,
+            createdAt: session.user.createdAt.toISOString(),
+        };
+    }, [session?.user]);
     const [plan, setPlan] = useState<TrainingPlan | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
     const [isPlanLoading, setIsPlanLoading] = useState(true);
     const isRefreshingRef = useRef(false)
 
@@ -48,27 +56,6 @@ export default function AuthProvider({ children } : { children: ReactNode})
             setIsPlanLoading(false);
         }
     }, [neonUser]);
-
-
-
-    useEffect(() => {
-        async function loadUser() {
-            try{
-                const result = await authClient.getSession()
-                if (result && result.data?.user){
-                    setNeonUser(result.data.user);
-                } else{
-                    setNeonUser(null);
-                }
-            } catch (err) {
-                setNeonUser(null);
-            }finally{
-                setIsLoading(false);
-            }
-        }
-
-        loadUser();
-    }, [])
 
 useEffect(() => {
     if(!isLoading){

@@ -1,4 +1,3 @@
-import { RedirectToSignIn, SignedIn } from "@neondatabase/neon-js/auth/react";
 import { useAuth } from "../context/AuthContext";
 import { Card } from "../components/ui/Card";
 import { Input } from "../components/ui/Inputs";
@@ -130,9 +129,7 @@ export default function Onboarding() {
     } finally { setIsGenerating(false); }
   }
 
-  if (!user) return <RedirectToSignIn />;
-
-  return <SignedIn><div className="min-h-screen pt-24 pb-12 px-6"><div className="max-w-xl mx-auto">
+  return <div className="min-h-screen pt-24 pb-12 px-6"><div className="max-w-xl mx-auto">
     {isProfileLoading ? <Card variant="bordered" className="py-16 text-center"><Loader2 className="w-12 h-12 text-[var(--color-accent)] mx-auto mb-6 animate-spin" /><h1 className="text-2xl font-bold mb-2">Loading Your Profile</h1></Card>
       : !isGenerating ? <Card variant="bordered">
         <div className="mb-6"><p className="text-sm text-[var(--color-muted)] mb-2">Step {step} of 2</p><h1 className="text-2xl font-bold mb-2">{step === 1 ? (hasExistingProfile ? "Update Your Profile" : "Tell Us About Yourself") : "Build Your Calorie Plan"}</h1>
@@ -156,5 +153,5 @@ export default function Onboarding() {
           <div className="flex gap-3 pt-2"><Button type="button" variant="secondary" onClick={() => setStep(1)} className="gap-2"><ArrowLeft className="w-4 h-4" /> Back</Button><Button type="submit" className="flex-1 gap-2">{hasExistingProfile ? "Update & Generate Plan" : "Generate My Plan"} <ArrowRight className="w-4 h-4" /></Button></div>
         </form>}
       </Card> : <Card variant="bordered" className="text-center py-16"><Loader2 className="w-12 h-12 text-[var(--color-accent)] mx-auto mb-6 animate-spin" /><h1 className="text-2xl font-bold mb-2">Creating Your Plan</h1><p className="text-[var(--color-muted)]">Our AI is building your personalized training program...</p></Card>}
-  </div></div></SignedIn>;
+  </div></div>;
 }
