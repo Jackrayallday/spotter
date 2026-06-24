@@ -14,7 +14,9 @@ export async function POST(request: Request) {
     }
 
     const profileResult = await pool.query(
-      `SELECT goal, experience, days_per_week, session_length, equipment, injuries, preferred_split
+      `SELECT goal, experience, days_per_week, session_length, equipment, injuries, preferred_split,
+              age, calculation_sex, height_feet, height_inches, weight_pounds, activity_level,
+              nutrition_goal, desired_pace, bmr_kcal, tdee_kcal, daily_adjustment_kcal, target_kcal
        FROM user_profiles
        WHERE user_id = $1
        LIMIT 1`,

@@ -32,5 +32,17 @@ model user_profiles {
   equipment String @db.VarChar(20)
   injuries String?
   preferred_split String @db.VarChar(20)
+  age Int?
+  calculation_sex String? @db.VarChar(10)
+  height_feet Int?
+  height_inches Int?
+  weight_pounds Decimal? @db.Decimal(6, 1)
+  activity_level String? @db.VarChar(20)
+  nutrition_goal String? @db.VarChar(20)
+  desired_pace String? @db.VarChar(20)
+  bmr_kcal Int?
+  tdee_kcal Int?
+  daily_adjustment_kcal Int?
+  target_kcal Int?
   update_at DateTime @default(now()) @db.Timestamptz(6)
 }

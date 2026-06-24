@@ -78,6 +78,18 @@ export async function generateTrainingPlan(
     equipment: profile.equipment || "full_gym",
     injuries: profile.injuries || null,
     preferred_split: profile.preferred_split || "upper_lower",
+    age: profile.age || null,
+    calculation_sex: profile.calculation_sex || null,
+    height_feet: profile.height_feet || null,
+    height_inches: profile.height_inches ?? null,
+    weight_pounds: profile.weight_pounds || null,
+    activity_level: profile.activity_level || null,
+    nutrition_goal: profile.nutrition_goal || null,
+    desired_pace: profile.desired_pace || null,
+    bmr_kcal: profile.bmr_kcal || null,
+    tdee_kcal: profile.tdee_kcal || null,
+    daily_adjustment_kcal: profile.daily_adjustment_kcal || null,
+    target_kcal: profile.target_kcal || null,
   };
 
   const apiKey = process.env.OPEN_ROUTER_KEY;
@@ -372,6 +384,7 @@ function buildPrompt(profile: UserProfile): string {
     Equipment: ${equipmentMap[profile.equipment] || profile.equipment}
     Preferred Split: ${splitMap[profile.preferred_split] || profile.preferred_split}
     ${profile.injuries ? `Injuries/Limitations: ${profile.injuries}` : ""}
+    ${profile.age ? `\n    Body and energy context:\n    Age: ${profile.age} years\n    Sex: ${profile.calculation_sex}\n    Height: ${profile.height_feet} ft ${profile.height_inches} in\n    Weight: ${profile.weight_pounds} lb\n    Usual daily activity: ${profile.activity_level}\n    Estimated basal metabolic rate: ${profile.bmr_kcal} kcal/day\n    Estimated maintenance calories: ${profile.tdee_kcal} kcal/day\n    Starting calorie target: ${profile.target_kcal} kcal/day\n    Nutrition approach: ${profile.nutrition_goal}\n    ${profile.desired_pace ? `Desired pace: ${profile.desired_pace}` : ""}` : ""}
 
     Generate a complete training plan in JSON format with this exact structure:
     {
@@ -412,6 +425,8 @@ function buildPrompt(profile: UserProfile): string {
       - ${profile.injuries ? `Avoid exercises that could aggravate: ${profile.injuries}` : ""}
       - Provide exercise alternatives where appropriate
       - Make it progressive and suitable for ${experienceMap[profile.experience] || profile.experience} level
+      - Use the body and energy context to tailor exercise selection, volume, recovery demands, and progression
+      - Treat the calorie target as fixed training context; do not generate a meal plan, prescribe macros, change the target, or provide medical advice
 
       Return ONLY the JSON object (no markdown, no extra text).
       `;

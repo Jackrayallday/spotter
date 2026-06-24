@@ -29,11 +29,27 @@ export type AggregateUser_profiles = {
 export type User_profilesAvgAggregateOutputType = {
   days_per_week: number | null
   session_length: number | null
+  age: number | null
+  height_feet: number | null
+  height_inches: number | null
+  weight_pounds: runtime.Decimal | null
+  bmr_kcal: number | null
+  tdee_kcal: number | null
+  daily_adjustment_kcal: number | null
+  target_kcal: number | null
 }
 
 export type User_profilesSumAggregateOutputType = {
   days_per_week: number | null
   session_length: number | null
+  age: number | null
+  height_feet: number | null
+  height_inches: number | null
+  weight_pounds: runtime.Decimal | null
+  bmr_kcal: number | null
+  tdee_kcal: number | null
+  daily_adjustment_kcal: number | null
+  target_kcal: number | null
 }
 
 export type User_profilesMinAggregateOutputType = {
@@ -45,6 +61,18 @@ export type User_profilesMinAggregateOutputType = {
   equipment: string | null
   injuries: string | null
   preferred_split: string | null
+  age: number | null
+  calculation_sex: string | null
+  height_feet: number | null
+  height_inches: number | null
+  weight_pounds: runtime.Decimal | null
+  activity_level: string | null
+  nutrition_goal: string | null
+  desired_pace: string | null
+  bmr_kcal: number | null
+  tdee_kcal: number | null
+  daily_adjustment_kcal: number | null
+  target_kcal: number | null
   update_at: Date | null
 }
 
@@ -57,6 +85,18 @@ export type User_profilesMaxAggregateOutputType = {
   equipment: string | null
   injuries: string | null
   preferred_split: string | null
+  age: number | null
+  calculation_sex: string | null
+  height_feet: number | null
+  height_inches: number | null
+  weight_pounds: runtime.Decimal | null
+  activity_level: string | null
+  nutrition_goal: string | null
+  desired_pace: string | null
+  bmr_kcal: number | null
+  tdee_kcal: number | null
+  daily_adjustment_kcal: number | null
+  target_kcal: number | null
   update_at: Date | null
 }
 
@@ -69,6 +109,18 @@ export type User_profilesCountAggregateOutputType = {
   equipment: number
   injuries: number
   preferred_split: number
+  age: number
+  calculation_sex: number
+  height_feet: number
+  height_inches: number
+  weight_pounds: number
+  activity_level: number
+  nutrition_goal: number
+  desired_pace: number
+  bmr_kcal: number
+  tdee_kcal: number
+  daily_adjustment_kcal: number
+  target_kcal: number
   update_at: number
   _all: number
 }
@@ -77,11 +129,27 @@ export type User_profilesCountAggregateOutputType = {
 export type User_profilesAvgAggregateInputType = {
   days_per_week?: true
   session_length?: true
+  age?: true
+  height_feet?: true
+  height_inches?: true
+  weight_pounds?: true
+  bmr_kcal?: true
+  tdee_kcal?: true
+  daily_adjustment_kcal?: true
+  target_kcal?: true
 }
 
 export type User_profilesSumAggregateInputType = {
   days_per_week?: true
   session_length?: true
+  age?: true
+  height_feet?: true
+  height_inches?: true
+  weight_pounds?: true
+  bmr_kcal?: true
+  tdee_kcal?: true
+  daily_adjustment_kcal?: true
+  target_kcal?: true
 }
 
 export type User_profilesMinAggregateInputType = {
@@ -93,6 +161,18 @@ export type User_profilesMinAggregateInputType = {
   equipment?: true
   injuries?: true
   preferred_split?: true
+  age?: true
+  calculation_sex?: true
+  height_feet?: true
+  height_inches?: true
+  weight_pounds?: true
+  activity_level?: true
+  nutrition_goal?: true
+  desired_pace?: true
+  bmr_kcal?: true
+  tdee_kcal?: true
+  daily_adjustment_kcal?: true
+  target_kcal?: true
   update_at?: true
 }
 
@@ -105,6 +185,18 @@ export type User_profilesMaxAggregateInputType = {
   equipment?: true
   injuries?: true
   preferred_split?: true
+  age?: true
+  calculation_sex?: true
+  height_feet?: true
+  height_inches?: true
+  weight_pounds?: true
+  activity_level?: true
+  nutrition_goal?: true
+  desired_pace?: true
+  bmr_kcal?: true
+  tdee_kcal?: true
+  daily_adjustment_kcal?: true
+  target_kcal?: true
   update_at?: true
 }
 
@@ -117,6 +209,18 @@ export type User_profilesCountAggregateInputType = {
   equipment?: true
   injuries?: true
   preferred_split?: true
+  age?: true
+  calculation_sex?: true
+  height_feet?: true
+  height_inches?: true
+  weight_pounds?: true
+  activity_level?: true
+  nutrition_goal?: true
+  desired_pace?: true
+  bmr_kcal?: true
+  tdee_kcal?: true
+  daily_adjustment_kcal?: true
+  target_kcal?: true
   update_at?: true
   _all?: true
 }
@@ -216,6 +320,18 @@ export type User_profilesGroupByOutputType = {
   equipment: string
   injuries: string | null
   preferred_split: string
+  age: number | null
+  calculation_sex: string | null
+  height_feet: number | null
+  height_inches: number | null
+  weight_pounds: runtime.Decimal | null
+  activity_level: string | null
+  nutrition_goal: string | null
+  desired_pace: string | null
+  bmr_kcal: number | null
+  tdee_kcal: number | null
+  daily_adjustment_kcal: number | null
+  target_kcal: number | null
   update_at: Date
   _count: User_profilesCountAggregateOutputType | null
   _avg: User_profilesAvgAggregateOutputType | null
@@ -251,6 +367,18 @@ export type user_profilesWhereInput = {
   equipment?: Prisma.StringFilter<"user_profiles"> | string
   injuries?: Prisma.StringNullableFilter<"user_profiles"> | string | null
   preferred_split?: Prisma.StringFilter<"user_profiles"> | string
+  age?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  calculation_sex?: Prisma.StringNullableFilter<"user_profiles"> | string | null
+  height_feet?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  height_inches?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  weight_pounds?: Prisma.DecimalNullableFilter<"user_profiles"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  activity_level?: Prisma.StringNullableFilter<"user_profiles"> | string | null
+  nutrition_goal?: Prisma.StringNullableFilter<"user_profiles"> | string | null
+  desired_pace?: Prisma.StringNullableFilter<"user_profiles"> | string | null
+  bmr_kcal?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  tdee_kcal?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  daily_adjustment_kcal?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  target_kcal?: Prisma.IntNullableFilter<"user_profiles"> | number | null
   update_at?: Prisma.DateTimeFilter<"user_profiles"> | Date | string
 }
 
@@ -263,6 +391,18 @@ export type user_profilesOrderByWithRelationInput = {
   equipment?: Prisma.SortOrder
   injuries?: Prisma.SortOrderInput | Prisma.SortOrder
   preferred_split?: Prisma.SortOrder
+  age?: Prisma.SortOrderInput | Prisma.SortOrder
+  calculation_sex?: Prisma.SortOrderInput | Prisma.SortOrder
+  height_feet?: Prisma.SortOrderInput | Prisma.SortOrder
+  height_inches?: Prisma.SortOrderInput | Prisma.SortOrder
+  weight_pounds?: Prisma.SortOrderInput | Prisma.SortOrder
+  activity_level?: Prisma.SortOrderInput | Prisma.SortOrder
+  nutrition_goal?: Prisma.SortOrderInput | Prisma.SortOrder
+  desired_pace?: Prisma.SortOrderInput | Prisma.SortOrder
+  bmr_kcal?: Prisma.SortOrderInput | Prisma.SortOrder
+  tdee_kcal?: Prisma.SortOrderInput | Prisma.SortOrder
+  daily_adjustment_kcal?: Prisma.SortOrderInput | Prisma.SortOrder
+  target_kcal?: Prisma.SortOrderInput | Prisma.SortOrder
   update_at?: Prisma.SortOrder
 }
 
@@ -278,6 +418,18 @@ export type user_profilesWhereUniqueInput = Prisma.AtLeast<{
   equipment?: Prisma.StringFilter<"user_profiles"> | string
   injuries?: Prisma.StringNullableFilter<"user_profiles"> | string | null
   preferred_split?: Prisma.StringFilter<"user_profiles"> | string
+  age?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  calculation_sex?: Prisma.StringNullableFilter<"user_profiles"> | string | null
+  height_feet?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  height_inches?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  weight_pounds?: Prisma.DecimalNullableFilter<"user_profiles"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  activity_level?: Prisma.StringNullableFilter<"user_profiles"> | string | null
+  nutrition_goal?: Prisma.StringNullableFilter<"user_profiles"> | string | null
+  desired_pace?: Prisma.StringNullableFilter<"user_profiles"> | string | null
+  bmr_kcal?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  tdee_kcal?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  daily_adjustment_kcal?: Prisma.IntNullableFilter<"user_profiles"> | number | null
+  target_kcal?: Prisma.IntNullableFilter<"user_profiles"> | number | null
   update_at?: Prisma.DateTimeFilter<"user_profiles"> | Date | string
 }, "user_id">
 
@@ -290,6 +442,18 @@ export type user_profilesOrderByWithAggregationInput = {
   equipment?: Prisma.SortOrder
   injuries?: Prisma.SortOrderInput | Prisma.SortOrder
   preferred_split?: Prisma.SortOrder
+  age?: Prisma.SortOrderInput | Prisma.SortOrder
+  calculation_sex?: Prisma.SortOrderInput | Prisma.SortOrder
+  height_feet?: Prisma.SortOrderInput | Prisma.SortOrder
+  height_inches?: Prisma.SortOrderInput | Prisma.SortOrder
+  weight_pounds?: Prisma.SortOrderInput | Prisma.SortOrder
+  activity_level?: Prisma.SortOrderInput | Prisma.SortOrder
+  nutrition_goal?: Prisma.SortOrderInput | Prisma.SortOrder
+  desired_pace?: Prisma.SortOrderInput | Prisma.SortOrder
+  bmr_kcal?: Prisma.SortOrderInput | Prisma.SortOrder
+  tdee_kcal?: Prisma.SortOrderInput | Prisma.SortOrder
+  daily_adjustment_kcal?: Prisma.SortOrderInput | Prisma.SortOrder
+  target_kcal?: Prisma.SortOrderInput | Prisma.SortOrder
   update_at?: Prisma.SortOrder
   _count?: Prisma.user_profilesCountOrderByAggregateInput
   _avg?: Prisma.user_profilesAvgOrderByAggregateInput
@@ -310,6 +474,18 @@ export type user_profilesScalarWhereWithAggregatesInput = {
   equipment?: Prisma.StringWithAggregatesFilter<"user_profiles"> | string
   injuries?: Prisma.StringNullableWithAggregatesFilter<"user_profiles"> | string | null
   preferred_split?: Prisma.StringWithAggregatesFilter<"user_profiles"> | string
+  age?: Prisma.IntNullableWithAggregatesFilter<"user_profiles"> | number | null
+  calculation_sex?: Prisma.StringNullableWithAggregatesFilter<"user_profiles"> | string | null
+  height_feet?: Prisma.IntNullableWithAggregatesFilter<"user_profiles"> | number | null
+  height_inches?: Prisma.IntNullableWithAggregatesFilter<"user_profiles"> | number | null
+  weight_pounds?: Prisma.DecimalNullableWithAggregatesFilter<"user_profiles"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  activity_level?: Prisma.StringNullableWithAggregatesFilter<"user_profiles"> | string | null
+  nutrition_goal?: Prisma.StringNullableWithAggregatesFilter<"user_profiles"> | string | null
+  desired_pace?: Prisma.StringNullableWithAggregatesFilter<"user_profiles"> | string | null
+  bmr_kcal?: Prisma.IntNullableWithAggregatesFilter<"user_profiles"> | number | null
+  tdee_kcal?: Prisma.IntNullableWithAggregatesFilter<"user_profiles"> | number | null
+  daily_adjustment_kcal?: Prisma.IntNullableWithAggregatesFilter<"user_profiles"> | number | null
+  target_kcal?: Prisma.IntNullableWithAggregatesFilter<"user_profiles"> | number | null
   update_at?: Prisma.DateTimeWithAggregatesFilter<"user_profiles"> | Date | string
 }
 
@@ -322,6 +498,18 @@ export type user_profilesCreateInput = {
   equipment: string
   injuries?: string | null
   preferred_split: string
+  age?: number | null
+  calculation_sex?: string | null
+  height_feet?: number | null
+  height_inches?: number | null
+  weight_pounds?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  activity_level?: string | null
+  nutrition_goal?: string | null
+  desired_pace?: string | null
+  bmr_kcal?: number | null
+  tdee_kcal?: number | null
+  daily_adjustment_kcal?: number | null
+  target_kcal?: number | null
   update_at?: Date | string
 }
 
@@ -334,6 +522,18 @@ export type user_profilesUncheckedCreateInput = {
   equipment: string
   injuries?: string | null
   preferred_split: string
+  age?: number | null
+  calculation_sex?: string | null
+  height_feet?: number | null
+  height_inches?: number | null
+  weight_pounds?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  activity_level?: string | null
+  nutrition_goal?: string | null
+  desired_pace?: string | null
+  bmr_kcal?: number | null
+  tdee_kcal?: number | null
+  daily_adjustment_kcal?: number | null
+  target_kcal?: number | null
   update_at?: Date | string
 }
 
@@ -346,6 +546,18 @@ export type user_profilesUpdateInput = {
   equipment?: Prisma.StringFieldUpdateOperationsInput | string
   injuries?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferred_split?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  calculation_sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  height_feet?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height_inches?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  weight_pounds?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  activity_level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nutrition_goal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  desired_pace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bmr_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tdee_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  daily_adjustment_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  target_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   update_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -358,6 +570,18 @@ export type user_profilesUncheckedUpdateInput = {
   equipment?: Prisma.StringFieldUpdateOperationsInput | string
   injuries?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferred_split?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  calculation_sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  height_feet?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height_inches?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  weight_pounds?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  activity_level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nutrition_goal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  desired_pace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bmr_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tdee_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  daily_adjustment_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  target_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   update_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -370,6 +594,18 @@ export type user_profilesCreateManyInput = {
   equipment: string
   injuries?: string | null
   preferred_split: string
+  age?: number | null
+  calculation_sex?: string | null
+  height_feet?: number | null
+  height_inches?: number | null
+  weight_pounds?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  activity_level?: string | null
+  nutrition_goal?: string | null
+  desired_pace?: string | null
+  bmr_kcal?: number | null
+  tdee_kcal?: number | null
+  daily_adjustment_kcal?: number | null
+  target_kcal?: number | null
   update_at?: Date | string
 }
 
@@ -382,6 +618,18 @@ export type user_profilesUpdateManyMutationInput = {
   equipment?: Prisma.StringFieldUpdateOperationsInput | string
   injuries?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferred_split?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  calculation_sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  height_feet?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height_inches?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  weight_pounds?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  activity_level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nutrition_goal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  desired_pace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bmr_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tdee_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  daily_adjustment_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  target_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   update_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -394,6 +642,18 @@ export type user_profilesUncheckedUpdateManyInput = {
   equipment?: Prisma.StringFieldUpdateOperationsInput | string
   injuries?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferred_split?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  calculation_sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  height_feet?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height_inches?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  weight_pounds?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  activity_level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nutrition_goal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  desired_pace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bmr_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tdee_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  daily_adjustment_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  target_kcal?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   update_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -406,12 +666,32 @@ export type user_profilesCountOrderByAggregateInput = {
   equipment?: Prisma.SortOrder
   injuries?: Prisma.SortOrder
   preferred_split?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  calculation_sex?: Prisma.SortOrder
+  height_feet?: Prisma.SortOrder
+  height_inches?: Prisma.SortOrder
+  weight_pounds?: Prisma.SortOrder
+  activity_level?: Prisma.SortOrder
+  nutrition_goal?: Prisma.SortOrder
+  desired_pace?: Prisma.SortOrder
+  bmr_kcal?: Prisma.SortOrder
+  tdee_kcal?: Prisma.SortOrder
+  daily_adjustment_kcal?: Prisma.SortOrder
+  target_kcal?: Prisma.SortOrder
   update_at?: Prisma.SortOrder
 }
 
 export type user_profilesAvgOrderByAggregateInput = {
   days_per_week?: Prisma.SortOrder
   session_length?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  height_feet?: Prisma.SortOrder
+  height_inches?: Prisma.SortOrder
+  weight_pounds?: Prisma.SortOrder
+  bmr_kcal?: Prisma.SortOrder
+  tdee_kcal?: Prisma.SortOrder
+  daily_adjustment_kcal?: Prisma.SortOrder
+  target_kcal?: Prisma.SortOrder
 }
 
 export type user_profilesMaxOrderByAggregateInput = {
@@ -423,6 +703,18 @@ export type user_profilesMaxOrderByAggregateInput = {
   equipment?: Prisma.SortOrder
   injuries?: Prisma.SortOrder
   preferred_split?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  calculation_sex?: Prisma.SortOrder
+  height_feet?: Prisma.SortOrder
+  height_inches?: Prisma.SortOrder
+  weight_pounds?: Prisma.SortOrder
+  activity_level?: Prisma.SortOrder
+  nutrition_goal?: Prisma.SortOrder
+  desired_pace?: Prisma.SortOrder
+  bmr_kcal?: Prisma.SortOrder
+  tdee_kcal?: Prisma.SortOrder
+  daily_adjustment_kcal?: Prisma.SortOrder
+  target_kcal?: Prisma.SortOrder
   update_at?: Prisma.SortOrder
 }
 
@@ -435,16 +727,52 @@ export type user_profilesMinOrderByAggregateInput = {
   equipment?: Prisma.SortOrder
   injuries?: Prisma.SortOrder
   preferred_split?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  calculation_sex?: Prisma.SortOrder
+  height_feet?: Prisma.SortOrder
+  height_inches?: Prisma.SortOrder
+  weight_pounds?: Prisma.SortOrder
+  activity_level?: Prisma.SortOrder
+  nutrition_goal?: Prisma.SortOrder
+  desired_pace?: Prisma.SortOrder
+  bmr_kcal?: Prisma.SortOrder
+  tdee_kcal?: Prisma.SortOrder
+  daily_adjustment_kcal?: Prisma.SortOrder
+  target_kcal?: Prisma.SortOrder
   update_at?: Prisma.SortOrder
 }
 
 export type user_profilesSumOrderByAggregateInput = {
   days_per_week?: Prisma.SortOrder
   session_length?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  height_feet?: Prisma.SortOrder
+  height_inches?: Prisma.SortOrder
+  weight_pounds?: Prisma.SortOrder
+  bmr_kcal?: Prisma.SortOrder
+  tdee_kcal?: Prisma.SortOrder
+  daily_adjustment_kcal?: Prisma.SortOrder
+  target_kcal?: Prisma.SortOrder
 }
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 
@@ -458,6 +786,18 @@ export type user_profilesSelect<ExtArgs extends runtime.Types.Extensions.Interna
   equipment?: boolean
   injuries?: boolean
   preferred_split?: boolean
+  age?: boolean
+  calculation_sex?: boolean
+  height_feet?: boolean
+  height_inches?: boolean
+  weight_pounds?: boolean
+  activity_level?: boolean
+  nutrition_goal?: boolean
+  desired_pace?: boolean
+  bmr_kcal?: boolean
+  tdee_kcal?: boolean
+  daily_adjustment_kcal?: boolean
+  target_kcal?: boolean
   update_at?: boolean
 }, ExtArgs["result"]["user_profiles"]>
 
@@ -470,6 +810,18 @@ export type user_profilesSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   equipment?: boolean
   injuries?: boolean
   preferred_split?: boolean
+  age?: boolean
+  calculation_sex?: boolean
+  height_feet?: boolean
+  height_inches?: boolean
+  weight_pounds?: boolean
+  activity_level?: boolean
+  nutrition_goal?: boolean
+  desired_pace?: boolean
+  bmr_kcal?: boolean
+  tdee_kcal?: boolean
+  daily_adjustment_kcal?: boolean
+  target_kcal?: boolean
   update_at?: boolean
 }, ExtArgs["result"]["user_profiles"]>
 
@@ -482,6 +834,18 @@ export type user_profilesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   equipment?: boolean
   injuries?: boolean
   preferred_split?: boolean
+  age?: boolean
+  calculation_sex?: boolean
+  height_feet?: boolean
+  height_inches?: boolean
+  weight_pounds?: boolean
+  activity_level?: boolean
+  nutrition_goal?: boolean
+  desired_pace?: boolean
+  bmr_kcal?: boolean
+  tdee_kcal?: boolean
+  daily_adjustment_kcal?: boolean
+  target_kcal?: boolean
   update_at?: boolean
 }, ExtArgs["result"]["user_profiles"]>
 
@@ -494,10 +858,22 @@ export type user_profilesSelectScalar = {
   equipment?: boolean
   injuries?: boolean
   preferred_split?: boolean
+  age?: boolean
+  calculation_sex?: boolean
+  height_feet?: boolean
+  height_inches?: boolean
+  weight_pounds?: boolean
+  activity_level?: boolean
+  nutrition_goal?: boolean
+  desired_pace?: boolean
+  bmr_kcal?: boolean
+  tdee_kcal?: boolean
+  daily_adjustment_kcal?: boolean
+  target_kcal?: boolean
   update_at?: boolean
 }
 
-export type user_profilesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"user_id" | "goal" | "experience" | "days_per_week" | "session_length" | "equipment" | "injuries" | "preferred_split" | "update_at", ExtArgs["result"]["user_profiles"]>
+export type user_profilesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"user_id" | "goal" | "experience" | "days_per_week" | "session_length" | "equipment" | "injuries" | "preferred_split" | "age" | "calculation_sex" | "height_feet" | "height_inches" | "weight_pounds" | "activity_level" | "nutrition_goal" | "desired_pace" | "bmr_kcal" | "tdee_kcal" | "daily_adjustment_kcal" | "target_kcal" | "update_at", ExtArgs["result"]["user_profiles"]>
 
 export type $user_profilesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "user_profiles"
@@ -511,6 +887,18 @@ export type $user_profilesPayload<ExtArgs extends runtime.Types.Extensions.Inter
     equipment: string
     injuries: string | null
     preferred_split: string
+    age: number | null
+    calculation_sex: string | null
+    height_feet: number | null
+    height_inches: number | null
+    weight_pounds: runtime.Decimal | null
+    activity_level: string | null
+    nutrition_goal: string | null
+    desired_pace: string | null
+    bmr_kcal: number | null
+    tdee_kcal: number | null
+    daily_adjustment_kcal: number | null
+    target_kcal: number | null
     update_at: Date
   }, ExtArgs["result"]["user_profiles"]>
   composites: {}
@@ -943,6 +1331,18 @@ export interface user_profilesFieldRefs {
   readonly equipment: Prisma.FieldRef<"user_profiles", 'String'>
   readonly injuries: Prisma.FieldRef<"user_profiles", 'String'>
   readonly preferred_split: Prisma.FieldRef<"user_profiles", 'String'>
+  readonly age: Prisma.FieldRef<"user_profiles", 'Int'>
+  readonly calculation_sex: Prisma.FieldRef<"user_profiles", 'String'>
+  readonly height_feet: Prisma.FieldRef<"user_profiles", 'Int'>
+  readonly height_inches: Prisma.FieldRef<"user_profiles", 'Int'>
+  readonly weight_pounds: Prisma.FieldRef<"user_profiles", 'Decimal'>
+  readonly activity_level: Prisma.FieldRef<"user_profiles", 'String'>
+  readonly nutrition_goal: Prisma.FieldRef<"user_profiles", 'String'>
+  readonly desired_pace: Prisma.FieldRef<"user_profiles", 'String'>
+  readonly bmr_kcal: Prisma.FieldRef<"user_profiles", 'Int'>
+  readonly tdee_kcal: Prisma.FieldRef<"user_profiles", 'Int'>
+  readonly daily_adjustment_kcal: Prisma.FieldRef<"user_profiles", 'Int'>
+  readonly target_kcal: Prisma.FieldRef<"user_profiles", 'Int'>
   readonly update_at: Prisma.FieldRef<"user_profiles", 'DateTime'>
 }
     

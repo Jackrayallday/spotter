@@ -6,6 +6,18 @@ export interface UserProfile {
   equipment: string;
   injuries?: string | null;
   preferred_split: string;
+  age?: number | null;
+  calculation_sex?: "female" | "male" | null;
+  height_feet?: number | null;
+  height_inches?: number | null;
+  weight_pounds?: number | null;
+  activity_level?: string | null;
+  nutrition_goal?: string | null;
+  desired_pace?: string | null;
+  bmr_kcal?: number | null;
+  tdee_kcal?: number | null;
+  daily_adjustment_kcal?: number | null;
+  target_kcal?: number | null;
 }
 
 export interface PlanOverview {
