@@ -1,5 +1,5 @@
 import { pool } from "./lib/db.js";
-import { calculateNutritionPlan, deriveNutritionGoal, validateNutritionInputs, type NutritionInputs } from "../src/lib/nutrition.ts";
+import { calculateNutritionPlan, deriveNutritionGoal, validateNutritionInputs, type NutritionInputs } from "./lib/nutrition.js";
 
 function json(data: unknown, init?: ResponseInit) {
   return Response.json(data, init);
